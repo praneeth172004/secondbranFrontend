@@ -1,0 +1,34 @@
+/* src/components/LandingPage.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF; /* White */
+    color: #111827; /* Gray 900 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #111827, #4B5563); /* Black to Gray-600 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cta-button {
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.feature-card {
+    border: 1px solid #E5E7EB; /* Gray 200 */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover {
+    background-color: #F9FAFB; /* Gray 50 */
+    border-color: #9CA3AF; /* Gray 400 */
+}
