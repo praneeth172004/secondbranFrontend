@@ -83,7 +83,7 @@ export default function Signup() {
             <button
               type="submit"
               onClick={()=>navigate("/login")}
-              className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600"
+              className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600 mt-3"
             >
               Login
             </button>
