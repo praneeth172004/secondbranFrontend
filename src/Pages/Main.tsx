@@ -4,7 +4,7 @@ import AddContent from './AddContent';
 import Card from '../Components/Card';
 import axiosinstance from '../axios';
 import ShowShareLink from './ShowShareLink';
-import { BiLoader, BiLoaderCircle } from 'react-icons/bi';
+import {  BiLoaderCircle } from 'react-icons/bi';
 
 
 interface ContentType {
@@ -30,7 +30,7 @@ export default function Main({ choice }: MainProps) {
   const [showshare, setshowshare] = useState(false);
   const [link, setlink] = useState('');
   const [pdfurl, setpdfurl] = useState<string>('');
-  const [search,setsearch]=useState<string>('');
+
   const fetchContent = async () => {
     try {
       const response = await axiosinstance.get('/user/content', {
