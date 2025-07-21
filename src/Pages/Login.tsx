@@ -30,7 +30,7 @@ export default function Login() {
       
      
       console.log("Login Success:", response.data);
-      navigate("/");
+      navigate("/Dashboard");
     } catch (error) {
       console.error("Login Failed:", error);
       alert("Invalid credentials or server error!");
