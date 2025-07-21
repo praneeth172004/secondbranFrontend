@@ -38,13 +38,19 @@ export default function Main({ choice }: MainProps) {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      console.log(response);
+      
       setCards(response.data.content || []);
     } catch (err) {
       console.error('Error fetching content:', err);
     } finally {
       setLoading(false);
     }
+    console.log(cards);
+    
   };
+  console.log(cards);
+  
 
   const handledelete = async (id: string) => {
     try {
