@@ -1,5 +1,5 @@
 // src/components/LandingPage.js
-import React from 'react';
+
 import './LandingPage.css'; // Import your custom styles
 
 function LandingPage() {

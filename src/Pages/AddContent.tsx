@@ -49,6 +49,8 @@ export default function AddContent({ show, setshow }: AddcontentProps) {
           },
         }
       );
+      console.log(response);
+      
       alert("Content Successfully Added");
       setshow(false);
     } catch (err) {
@@ -74,6 +76,8 @@ export default function AddContent({ show, setshow }: AddcontentProps) {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      console.log(response);
+      
 
       alert("PDF Successfully Uploaded");
       setshow(false);

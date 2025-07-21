@@ -18,8 +18,7 @@ interface IconsProps {
 export default function Icons({
   show,
   setshow,
-  share,
-  link,
+  
   setshare,
   setlink,
 }: IconsProps) {
