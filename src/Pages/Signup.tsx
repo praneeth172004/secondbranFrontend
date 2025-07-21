@@ -35,6 +35,7 @@ export default function Signup() {
       alert("Signup failed: Check if username is already taken or input is missing.");
     }
   };
+ 
 
   return (
     <div className="bg-white h-screen flex items-center justify-center">
@@ -74,9 +75,17 @@ export default function Signup() {
             />
             <button
               type="submit"
+              
               className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600"
             >
               Signup
+            </button>
+            <button
+              type="submit"
+              onClick={()=>navigate("/login")}
+              className="bg-blue-500 p-2 rounded text-white hover:bg-blue-600"
+            >
+              Login
             </button>
           </form>
         </div>

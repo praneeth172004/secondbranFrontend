@@ -32,6 +32,8 @@ export default function Main({ choice }: MainProps) {
   const [pdfurl, setpdfurl] = useState<string>('');
 
   const fetchContent = async () => {
+    console.log(localStorage.getItem("token"));
+    
     try {
       const response = await axiosinstance.get('/user/content', {
         headers: {
