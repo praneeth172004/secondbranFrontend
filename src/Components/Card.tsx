@@ -43,6 +43,14 @@ export default function Card({
     }
   };
 
+ function getYouTubeID(url: any) {
+  const regExp = /^.*(?:youtu\.be\/|shorts\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[1].length === 11 ? match[1] : null;
+}
+
+
+
   // ✅ Derive displayType safely without mutating props
   const displayType = type === 'article' ? 'websites' : type;
 
@@ -76,13 +84,13 @@ export default function Card({
         {displayType === 'youtube' && (
           <div className="mb-2">
             <iframe
-              className="w-full aspect-video rounded-md"
-              src={link.replace('watch?v=', 'embed/')}
-              referrerPolicy="no-referrer"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="YouTube Video"
-            />
+  className="w-full aspect-video rounded-md"
+  src={`https://www.youtube.com/embed/${getYouTubeID(link)}`}
+  referrerPolicy="no-referrer"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+  title="YouTube Video"
+/>
           </div>
 
         )}

@@ -12,7 +12,7 @@ function ShowShareLink({ share, setshare, link }: ShowShareLinkProps) {
      const [copyMessage, setCopyMessage] = useState("");
     
   if (!share) return null;
-  const url="https://second-brain-frontend-zruo.vercel.app/"
+  const url="https://second-brain-frontend-zruo.vercel.app/share/"
   
   const fullLink = `${url}${link}`;
 
