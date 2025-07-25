@@ -21,6 +21,7 @@ export function useAuth(){
 export function AuthProvider({ children }: AuthProviderProps) {
   const [authuser, setauthuser] = useState<string>('');
   const [isloggedin, setisloggedin] = useState<boolean>(false);
+  const [urlimage,seturlimage]=useState<string>('');
   
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -39,7 +40,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     authuser,
     setauthuser,
     isloggedin,
-    setisloggedin
+    setisloggedin,
+    seturlimage,
+    urlimage
   };
   return (
     <AuthContext.Provider value={value}>
