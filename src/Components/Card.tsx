@@ -92,20 +92,20 @@ export default function Card({
           )}
 
           {displayType === 'pdf' && (
-  <div className="mb-4 text-center">
-    <p className="text-sm font-medium text-gray-700 mb-1">PDF File</p>
-    <a
-  href={fileUrl}
-  download={title + ".pdf"} // Optional: give it a filename
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-block bg-green-100 text-green-800 font-semibold py-2 px-4 rounded-md hover:bg-green-200 transition"
->
-  📥 Download PDF
-</a>
+            <div className="mb-4 text-center">
+              <p className="text-sm font-medium text-gray-700 mb-1">PDF File</p>
+              <a
+                href={fileUrl}
+                download={title + ".pdf"} // Optional: give it a filename
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-green-100 text-green-800 font-semibold py-2 px-4 rounded-md hover:bg-green-200 transition"
+              >
+                📥 Download PDF
+              </a>
 
-  </div>
-)}
+            </div>
+          )}
 
 
           {displayType === 'websites' && link && (
