@@ -4,8 +4,7 @@ import AddContent from './AddContent';
 import Card from '../Components/Card';
 import axiosinstance from '../axios';
 import ShowShareLink from './ShowShareLink';
-import {  BiLoaderCircle } from 'react-icons/bi';
-
+import { BiLoaderCircle } from 'react-icons/bi';
 
 interface ContentType {
   _id: string;
@@ -20,7 +19,6 @@ interface ContentType {
 
 interface MainProps {
   choice: string | undefined;
-
 }
 
 export default function Main({ choice }: MainProps) {
@@ -30,29 +28,58 @@ export default function Main({ choice }: MainProps) {
   const [showshare, setshowshare] = useState(false);
   const [link, setlink] = useState('');
   const [pdfurl, setpdfurl] = useState<string>('');
+  const [search, setsearch] = useState<string>('');
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(''); // NEW
 
-  const fetchContent = async () => {
-    console.log(localStorage.getItem("token"));
-    
-    try {
-      const response = await axiosinstance.get('/user/content', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      console.log(response);
-      
-      setCards(response.data.content || []);
-    } catch (err) {
-      console.error('Error fetching content:', err);
-    } finally {
-      setLoading(false);
-    }
-    console.log(cards);
-    
-  };
-  console.log(cards);
-  
+  // Debounce logic
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // wait 500ms after user stops typing
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
+
+  // Fetch all content on mount
+  useEffect(() => {
+    const fetchContent = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosinstance.get('/user/content', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setCards(response.data.content || []);
+      } catch (err) {
+        console.error('Error fetching content:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  // Fetch search results after debounce
+  useEffect(() => {
+    const searchFetch = async () => {
+      try {
+        const response = await axiosinstance.get(`/user/search?query=${debouncedSearch}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setCards(response.data.content || []);
+      } catch (err) {
+        console.error('Error searching content:', err);
+      }
+    };
+
+    searchFetch();
+  }, [debouncedSearch]);
 
   const handledelete = async (id: string) => {
     try {
@@ -62,22 +89,13 @@ export default function Main({ choice }: MainProps) {
     }
   };
 
-  useEffect(() => {
-    fetchContent();
-   
-  }, []);
-
-
-  const filteredCards = choice && choice !== 'all'
-    ? cards.filter((card) => card.type === choice)
-    : cards;
-    console.log(filteredCards);
-    
+  const filteredCards =
+    choice && choice !== 'all'
+      ? cards.filter((card) => card.type === choice)
+      : cards;
 
   return (
     <div className="bg-gray-50 w-full p-5">
-
-
       <Icons
         show={showAddContent}
         setshow={setShowAddContent}
@@ -86,7 +104,8 @@ export default function Main({ choice }: MainProps) {
         setlink={setlink}
         link={link}
       />
-      {/* <div className="w-full flex justify-center">
+
+      <div className="w-full flex justify-center">
         <input
           type="search"
           name="searchQuery"
@@ -95,9 +114,10 @@ export default function Main({ choice }: MainProps) {
           autoComplete="off"
           value={search}
           className="w-full max-w-md h-10 rounded-2xl border-2 border-black hover:border-gray-400 focus:bg-gray-200 text-black p-2"
-          onChange={(e)=>setsearch(e.target.value)}
+          onChange={(e) => setsearch(e.target.value)}
         />
-      </div> */}
+      </div>
+
       <AddContent
         show={showAddContent}
         setshow={setShowAddContent}
@@ -112,14 +132,11 @@ export default function Main({ choice }: MainProps) {
         setlink={setlink}
       />
 
-      {/* ✅ Show Filter if a certain type is selected (adjust condition as needed) */}
-
-      <div className="flex flex-wrap gap-5 p-2 h-[85%] overflow-y-scroll pt-5 ">
+      <div className="flex flex-wrap gap-5 p-2 h-[85%] overflow-y-scroll pt-5">
         {loading ? (
-          <div className='flex justify-center items-center w-full h-full'>
-            <BiLoaderCircle size={50}></BiLoaderCircle>
+          <div className="flex justify-center items-center w-full h-full">
+            <BiLoaderCircle size={50} className="animate-spin" />
           </div>
-
         ) : filteredCards.length > 0 ? (
           filteredCards.map((card) => (
             <Card
@@ -141,7 +158,6 @@ export default function Main({ choice }: MainProps) {
           </p>
         )}
       </div>
-
     </div>
   );
 }
