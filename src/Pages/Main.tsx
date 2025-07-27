@@ -35,7 +35,7 @@ export default function Main({ choice }: MainProps) {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 500); // wait 500ms after user stops typing
+    }, 200); // wait 500ms after user stops typing
 
     return () => {
       clearTimeout(handler);
