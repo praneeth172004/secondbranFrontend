@@ -6,11 +6,11 @@ import { useAuth } from "../AuthProvider";
 export default function Login() {
   const navigate = useNavigate();
   const auth = useAuth();
-  const [loading, setLoading] = useState(false); // loader state
+  const [loading, setLoading] = useState(false);
 
   const handlelogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); // show loader
+    setLoading(true); 
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
@@ -32,7 +32,7 @@ export default function Login() {
 
       setTimeout(() => {
         navigate("/Dashboard");
-      }, 500); // optional delay for smooth transition
+      }, 500); 
     } catch (error) {
       console.error("Login Failed:", error);
       alert("Invalid credentials or server error!");

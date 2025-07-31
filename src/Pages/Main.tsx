@@ -31,11 +31,11 @@ export default function Main({ choice }: MainProps) {
   const [search, setsearch] = useState<string>('');
   const [debouncedSearch, setDebouncedSearch] = useState<string>(''); // NEW
 
-  // Debounce logic
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 200); // wait 500ms after user stops typing
+    }, 200); 
 
     return () => {
       clearTimeout(handler);
