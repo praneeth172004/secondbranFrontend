@@ -1,5 +1,5 @@
 import { BsTwitter, BsYoutube } from "react-icons/bs";
-import { HiDocument } from "react-icons/hi";
+
 import { IoLinkSharp } from "react-icons/io5";
 import SidebarButton from "./SidebarButton";
 import sidebarimage from "../assets/sidebarimage.webp";
