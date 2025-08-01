@@ -74,13 +74,7 @@ export default function Sidebar({ choice, setchoice }: SidebarProps) {
             StartIcon={<BsYoutube size={22} className="text-[#FF0000]" />}
             onClick={() => handleClick("youtube")}
           />
-          <SidebarButton
-            variant={choice === "pdf" ? "selected" : "primary"}
-            size="large"
-            text="Documents"
-            StartIcon={<HiDocument size={22} className="text-gray-700" />}
-            onClick={() => handleClick("pdf")}
-          />
+          
           <SidebarButton
             variant={choice === "article" ? "selected" : "primary"}
             size="large"
