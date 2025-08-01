@@ -99,6 +99,7 @@ export default function Main({ choice }: MainProps) {
       ? cards.filter((card) => card.type === choice)
       : cards;
 
+     
   return (
     <div className="bg-gray-50 w-full p-5">
       <Icons
@@ -157,6 +158,7 @@ export default function Main({ choice }: MainProps) {
               tags={card.tags}
               OnDelete={handledelete}
               fileUrl={card.fileUrl}
+              
             />
           ))
         ) : (

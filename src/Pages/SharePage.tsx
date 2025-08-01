@@ -65,11 +65,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Card from '../Components/Card';
+
 import axiosinstance from '../axios';
+import ShareCard from '../Components/ShareCard';
 
 interface ContentType {
-  _id: string;
+ 
   title: string;
   link: string;
   content: string;
@@ -110,9 +111,8 @@ function SharePage() {
       <div className="grid lg:grid-cols-4 md:grid-cols-2 w-full space-y-[5px]">
         {data.length > 0 ? (
           data.map((card) => (
-            <Card
-                          key={card._id}
-                          _id={card._id}
+            <ShareCard
+                          
                           title={card.title}
                           content={card.content}
                           link={card.link}

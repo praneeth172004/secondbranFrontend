@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { BsTwitter, BsYoutube } from 'react-icons/bs';
-import { MdDelete } from 'react-icons/md';
-import axiosinstance from '../axios';
+
 import { useAuth } from '../AuthProvider';
 
-interface CardProps {
-  _id: string;
+interface ShareCardProps {
+ 
   title: string;
   link: string;
   content: string;
@@ -16,16 +15,16 @@ interface CardProps {
   fileUrl: string;
 }
 
-export default function Card({
-  _id,
+export default function ShareCard({
+
   title,
   link,
   content,
   type,
   tags,
   createdAt,
-  OnDelete,
-}: CardProps) {
+ 
+}: ShareCardProps) {
   const date = new Date(createdAt);
   const formattedDate = date.toLocaleDateString();
   const formattedTime = date.toLocaleTimeString();
@@ -35,19 +34,7 @@ export default function Card({
   const [isTweetLoaded, setIsTweetLoaded] = useState(false);
   const displayType = type === 'article' ? 'websites' : type;
 
-  const handleDelete = async () => {
-    try {
-      await axiosinstance.delete(`/user/content?id=${_id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      OnDelete?.(_id);
-    } catch (error) {
-      console.error("Delete failed", error);
-      alert("Failed to delete. Try again.");
-    }
-  };
+  
 
   const getYouTubeID = (url: string) => {
     const regExp = /^.*(?:youtu\.be\/|shorts\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
@@ -80,13 +67,8 @@ export default function Card({
           <span className="truncate">{title}</span>
         </div>
         
-        <button
-          onClick={handleDelete}
-          className="text-red-500 hover:text-red-600 transition"
-          aria-label="Delete card"
-        >
-          <MdDelete size={20} />
-        </button>
+       
+        
       </div>
 
       {/* Content */}
