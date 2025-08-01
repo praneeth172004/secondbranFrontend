@@ -29,6 +29,7 @@ export default function Card({
   const date = new Date(createdAt);
   const formattedDate = date.toLocaleDateString();
   const formattedTime = date.toLocaleTimeString();
+  //@ts-ignore
   const { urlimage } = useAuth() as any;
 
   const [isTweetLoaded, setIsTweetLoaded] = useState(false);
