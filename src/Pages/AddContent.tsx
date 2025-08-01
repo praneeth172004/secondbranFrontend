@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axiosinstance from '../axios';
-
 import { useAuth } from '../AuthProvider';
 
 interface AddcontentProps {
   show: boolean;
   setshow: React.Dispatch<React.SetStateAction<boolean>>;
-  pdf: string;
-  setpdfurl: React.Dispatch<React.SetStateAction<string>>;
+  pdf?: string;
+  setpdfurl?: React.Dispatch<React.SetStateAction<string>>;
+  onContentAdded?: () => void;
 }
 
 const VALID_TYPES = [
@@ -16,92 +16,96 @@ const VALID_TYPES = [
   { label: 'Youtube', value: 'youtube' },
   { label: 'Twitter', value: 'twitter' },
   { label: 'Content', value: 'content' },
-  
 ];
 
-export default function AddContent({ show, setshow }: AddcontentProps) {
-  const [form, setform] = useState({
-    title: "",
-    content: "",
-    tags: "",
-    link: "",
-    type: ""
-  });
+const initialFormState = {
+  title: '',
+  content: '',
+  tags: '',
+  link: '',
+  type: '',
+};
 
+export default function AddContent({ show, setshow, onContentAdded }: AddcontentProps) {
+  const [form, setform] = useState(initialFormState);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  //@ts-ignore
+  const { seturlimage } = useAuth();
+
+  const resetAll = () => {
+    setform(initialFormState);
+    setUploadFile(null);
+    setPreviewUrl(null);
+  };
 
   const handlesubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const processedForm = {
       ...form,
-      tags: form.tags.split(',').map(tag => tag.trim())
+      tags: form.tags.split(',').map(tag => tag.trim()),
     };
 
     try {
-      const response = await axiosinstance.post(
-        "/user/addcontent",
-        processedForm,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log(response);
+      await axiosinstance.post("/user/addcontent", processedForm, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       alert("Content Successfully Added");
+      onContentAdded?.();
+      resetAll();
       setshow(false);
     } catch (err) {
       alert("Error in adding content: " + err);
     }
   };
-  //@ts-ignore
-  const {seturlimage}=useAuth();
 
-const handleupload = async () => {
-  if (!uploadFile) return;
-  setIsUploading(true);
-  try {
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("tags", form.tags);
-    formData.append("type", form.type);
-     if(form.type==="image"){
-       formData.append("image", uploadFile);
+  const handleupload = async () => {
+    if (!uploadFile) return;
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("tags", form.tags);
+      formData.append("type", form.type);
+      if (form.type === "image") {
+        formData.append("image", uploadFile);
+      }
+
+      const response = await axiosinstance.post(
+        `/user/upload/${form.type === "image" ? "image" : "pdf"}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      seturlimage(response.data.url);
+      alert("File Successfully Uploaded");
+      onContentAdded?.();
+      resetAll();
+      setshow(false);
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading file");
+    } finally {
+      setIsUploading(false);
     }
-
-    // 🟡 Attach file using a generic field name
-    // 'file' instead of 'pdf' or 'image'
-
-    const response = await axiosinstance.post(`/user/upload/${ form.type=="image" ?"image" :"pdf"}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-
-    console.log(response);
-    seturlimage(response.data.url)
-    alert("File Successfully Uploaded");
-    setshow(false);
-  } catch (err) {
-    console.error(err);
-    alert("Error uploading file");
-  } finally {
-    setIsUploading(false);
-  }
-};
-
+  };
 
   if (!show) return null;
 
   return (
-    <div className="fixed top-0 left-0 flex backdrop-blur-sm bg-black/50 h-screen w-screen justify-center items-center z-50 transition-all duration-700 ease-in-out">
+    <div className="fixed top-0 left-0 flex backdrop-blur-sm bg-black/50 h-screen w-screen justify-center items-center z-50">
       <div className="bg-white w-[400px] max-h-[90vh] p-10 rounded-lg shadow-lg overflow-y-auto">
         <h1 className="text-2xl font-bold mb-4">Add Content</h1>
-
         <form className="space-y-4" onSubmit={handlesubmit}>
           {/* Title */}
           <div>
@@ -123,7 +127,6 @@ const handleupload = async () => {
               rows={4}
               value={form.content}
               onChange={(e) => setform({ ...form, content: e.target.value })}
-              
             ></textarea>
           </div>
 
@@ -169,17 +172,12 @@ const handleupload = async () => {
             </select>
           </div>
 
-          {/* PDF Upload */}
-          
-          
-
-          {/* Image Upload + Preview */}
+          {/* File Upload */}
           {form.type === "image" && (
             <div className="mt-4">
-              <label htmlFor="image-upload" className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Upload Image
               </label>
-
               <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition cursor-pointer">
                 <input
                   id="image-upload"
@@ -219,23 +217,26 @@ const handleupload = async () => {
             </div>
           )}
 
-          {/* Action Buttons */}
+          {/* Actions */}
           <div className="flex justify-between mt-6">
             <button
               type="button"
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              onClick={() => setshow(false)}
+              onClick={() => {
+                resetAll();
+                setshow(false);
+              }}
             >
-              Go Back
+              Cancel
             </button>
 
-            {( form.type === "image") ? (
+            {(form.type === "image") ? (
               <button
                 type="button"
                 disabled={!uploadFile || isUploading}
                 className={`${uploadFile && !isUploading
-                    ? "bg-blue-500 hover:bg-blue-600 cursor-pointer"
-                    : "bg-gray-400 cursor-not-allowed"
+                  ? "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gray-400"
                   } text-white px-4 py-2 rounded`}
                 onClick={handleupload}
               >

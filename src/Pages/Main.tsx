@@ -29,42 +29,45 @@ export default function Main({ choice }: MainProps) {
   const [link, setlink] = useState('');
   const [pdfurl, setpdfurl] = useState<string>('');
   const [search, setsearch] = useState<string>('');
-  const [debouncedSearch, setDebouncedSearch] = useState<string>(''); // NEW
+  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
-
+  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 200); 
-
-    return () => {
-      clearTimeout(handler);
-    };
+    }, 300);
+    return () => clearTimeout(handler);
   }, [search]);
 
-  // Fetch all content on mount
-  useEffect(() => {
-    const fetchContent = async () => {
-      setLoading(true);
-      try {
-        const response = await axiosinstance.get('/user/content', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        setCards(response.data.content || []);
-      } catch (err) {
-        console.error('Error fetching content:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch all content
+  const fetchContent = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosinstance.get('/user/content', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setCards(response.data.content || []);
+    } catch (err) {
+      console.error('Error fetching content:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchContent();
-  }, []);
+  }, [refreshTrigger]);
 
-  // Fetch search results after debounce
+  // Fetch searched content
   useEffect(() => {
+    if (!debouncedSearch.trim()) {
+      fetchContent();
+      return;
+    }
+
     const searchFetch = async () => {
       try {
         const response = await axiosinstance.get(`/user/search?query=${debouncedSearch}`, {
@@ -81,12 +84,14 @@ export default function Main({ choice }: MainProps) {
     searchFetch();
   }, [debouncedSearch]);
 
-  const handledelete = async (id: string) => {
-    try {
-      setCards((prev) => prev.filter((item) => item._id !== id));
-    } catch (err) {
-      console.error('Error deleting content:', err);
-    }
+  // Called when content is added in AddContent modal
+  const handleContentReload = () => {
+    setRefreshTrigger(prev => !prev);
+  };
+
+  // Handle delete
+  const handledelete = (id: string) => {
+    setCards(prev => prev.filter((item) => item._id !== id));
   };
 
   const filteredCards =
@@ -105,26 +110,27 @@ export default function Main({ choice }: MainProps) {
         link={link}
       />
 
+      {/* Search Input */}
       <div className="w-full flex justify-center">
         <input
           type="search"
-          name="searchQuery"
           placeholder="Search..."
-          aria-label="Search"
-          autoComplete="off"
           value={search}
-          className="w-full max-w-md h-10 rounded-2xl border-2 border-black hover:border-gray-400 focus:bg-gray-200 text-black p-2"
           onChange={(e) => setsearch(e.target.value)}
+          className="w-full max-w-md h-10 rounded-2xl border-2 border-black hover:border-gray-400 focus:bg-gray-200 text-black p-2"
         />
       </div>
 
+      {/* Add Content Modal */}
       <AddContent
         show={showAddContent}
         setshow={setShowAddContent}
         pdf={pdfurl}
         setpdfurl={setpdfurl}
+        onContentAdded={handleContentReload}
       />
 
+      {/* Share Link Modal */}
       <ShowShareLink
         share={showshare}
         setshare={setshowshare}
@@ -132,10 +138,11 @@ export default function Main({ choice }: MainProps) {
         setlink={setlink}
       />
 
-      <div className="flex flex-wrap gap-5 p-2 h-[85%] overflow-y-scroll pt-5">
+      {/* Content Cards */}
+      <div className="flex flex-wrap gap-5 p-2 pt-5 max-h-[85vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300">
         {loading ? (
           <div className="flex justify-center items-center w-full h-full">
-            <BiLoaderCircle size={50} className="animate-spin" />
+            <BiLoaderCircle size={50} className="animate-spin text-gray-500" />
           </div>
         ) : filteredCards.length > 0 ? (
           filteredCards.map((card) => (
@@ -153,7 +160,7 @@ export default function Main({ choice }: MainProps) {
             />
           ))
         ) : (
-          <p className="text-gray-500 text-lg font-bold flex justify-center items-center h-screen w-full">
+          <p className="text-gray-500 text-lg font-bold flex justify-center items-center w-full mt-10">
             No content available.
           </p>
         )}
