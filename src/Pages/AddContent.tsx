@@ -16,7 +16,7 @@ const VALID_TYPES = [
   { label: 'Youtube', value: 'youtube' },
   { label: 'Twitter', value: 'twitter' },
   { label: 'Content', value: 'content' },
-  { label: 'PDF', value: 'pdf' }
+  
 ];
 
 export default function AddContent({ show, setshow }: AddcontentProps) {
@@ -68,9 +68,7 @@ const handleupload = async () => {
     formData.append("title", form.title);
     formData.append("tags", form.tags);
     formData.append("type", form.type);
-    if (form.type=="pdf"){
-      formData.append("pdf",uploadFile)
-    }else if(form.type==="image"){
+     if(form.type==="image"){
        formData.append("image", uploadFile);
     }
 
@@ -172,61 +170,7 @@ const handleupload = async () => {
           </div>
 
           {/* PDF Upload */}
-          {form.type === "pdf" && (
-            <div className="mt-4">
-              <label htmlFor="pdf-upload" className="block text-sm font-medium text-gray-700 mb-2">
-                Upload PDF
-              </label>
-
-              <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition cursor-pointer">
-                <input
-                  id="pdf-upload"
-                  type="file"
-                  accept="application/pdf"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setUploadFile(file);
-                      setPreviewUrl(null);
-                    }
-                  }}
-                />
-
-                <label
-                  htmlFor="pdf-upload"
-                  className="flex items-center gap-3 text-blue-600 font-medium hover:underline cursor-pointer"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-blue-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                  Choose PDF File
-                </label>
-
-                <p className="text-sm text-gray-500 mt-2">
-                  Only PDF files are accepted. Max size 10MB.
-                </p>
-
-                {uploadFile && (
-                  <p className="mt-2 text-sm text-green-600 font-medium truncate">
-                    Selected: {uploadFile.name}
-                  </p>
-                )}
-              </div>
-            </div>
-
-          )}
+          
           
 
           {/* Image Upload + Preview */}
@@ -285,7 +229,7 @@ const handleupload = async () => {
               Go Back
             </button>
 
-            {(form.type === "pdf" || form.type === "image" || form.type==="video" || form.type=="audio") ? (
+            {( form.type === "image") ? (
               <button
                 type="button"
                 disabled={!uploadFile || isUploading}

@@ -24,7 +24,7 @@ export default function Card({
   tags,
   createdAt,
   OnDelete,
-  fileUrl,
+ 
 }: CardProps) {
   const date = new Date(createdAt);
   const formattedDate = date.toLocaleDateString();
@@ -91,20 +91,7 @@ export default function Card({
             />
           )}
 
-          {displayType === 'pdf' && (
-            <div className="mb-4 text-center">
-              <p className="text-sm font-medium text-gray-700 mb-1">PDF File</p>
-              <a
-                href={fileUrl}
-                download={title + ".pdf"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-green-100 text-green-800 font-semibold py-2 px-4 rounded-md hover:bg-green-200 transition"
-              >
-                📥 Download PDF
-              </a>
-            </div>
-          )}
+          
 
           {displayType === 'websites' && link && (
             <div className="text-center w-full">
