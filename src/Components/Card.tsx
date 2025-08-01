@@ -56,7 +56,7 @@ export default function Card({
   const displayType = type === 'article' ? 'websites' : type;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-[360px] h-[auto] max-h-[350px] overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-full max-w-[360px] h-auto max-h-[460px] overflow-hidden flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-start px-4 pt-4">
         <div className="flex items-center gap-2 text-lg font-semibold text-gray-800 max-w-[240px] truncate">
@@ -96,17 +96,15 @@ export default function Card({
               <p className="text-sm font-medium text-gray-700 mb-1">PDF File</p>
               <a
                 href={fileUrl}
-                download={title + ".pdf"} // Optional: give it a filename
+                download={title + ".pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-green-100 text-green-800 font-semibold py-2 px-4 rounded-md hover:bg-green-200 transition"
               >
                 📥 Download PDF
               </a>
-
             </div>
           )}
-
 
           {displayType === 'websites' && link && (
             <div className="text-center w-full">
@@ -125,7 +123,7 @@ export default function Card({
           )}
 
           {displayType === 'twitter' && (
-            <div className="mb-2  text-center">
+            <div className="mb-2 text-center">
               <blockquote className="twitter-tweet">
                 <a
                   href={link.replace('x.com', 'twitter.com')}
@@ -142,7 +140,7 @@ export default function Card({
             <img
               src={link}
               alt="Uploaded"
-              className="w-[300px] h-[200px] object-cover rounded-lg shadow-sm"
+              className="w-full max-h-[200px] object-cover rounded-lg shadow-sm"
             />
           )}
         </div>

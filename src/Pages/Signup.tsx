@@ -6,7 +6,7 @@ export default function Signup() {
   const [form, setForm] = useState({
     username: "",
     password: "",
-    email:" "
+    email:""
   });
   const navigate=useNavigate();
   const handlesignup = async (e: React.FormEvent<HTMLFormElement>) => {

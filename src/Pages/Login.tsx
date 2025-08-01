@@ -42,12 +42,13 @@ export default function Login() {
 
   return (
     <div className="bg-white h-screen flex items-center justify-center">
-      <div className="relative h-[280px] w-[300px] bg-gray-200 text-black p-[20px] rounded-md">
-        {loading && (
-          <div className="absolute inset-0 bg-gray-300 bg-opacity-60 z-10 flex justify-center items-center rounded-md">
+      {loading && (
+          <div className="absolute inset-0 bg-gray-100 bg-opacity-60 z-10 flex justify-center items-center rounded-md">
             <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
           </div>
         )}
+      <div className="relative h-[280px] w-[300px] bg-gray-200 text-black p-[20px] rounded-md">
+        
 
         <div className="w-full text-[20px] font-bold flex justify-center mb-[10px]">Login</div>
         <div className="w-full mt-2">
