@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { BsTwitter, BsYoutube } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';
 import axiosinstance from '../axios';
@@ -24,14 +25,14 @@ export default function Card({
   tags,
   createdAt,
   OnDelete,
- 
 }: CardProps) {
   const date = new Date(createdAt);
   const formattedDate = date.toLocaleDateString();
   const formattedTime = date.toLocaleTimeString();
+  const { urlimage } = useAuth() as any;
 
-  //@ts-ignore
-  const { urlimage } = useAuth();
+  const [isTweetLoaded, setIsTweetLoaded] = useState(false);
+  const displayType = type === 'article' ? 'websites' : type;
 
   const handleDelete = async () => {
     try {
@@ -53,10 +54,23 @@ export default function Card({
     return match && match[1].length === 11 ? match[1] : null;
   };
 
-  const displayType = type === 'article' ? 'websites' : type;
+  useEffect(() => {
+    if (displayType === 'twitter') {
+      setIsTweetLoaded(false);
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.async = true;
+      script.onload = () => setIsTweetLoaded(true);
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [displayType, link]);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-full max-w-[360px] h-auto max-h-[460px] overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-full max-w-[320px] h-auto max-h-[460px] overflow-hidden flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-start px-4 pt-4">
         <div className="flex items-center gap-2 text-lg font-semibold text-gray-800 max-w-[240px] truncate">
@@ -75,12 +89,10 @@ export default function Card({
 
       {/* Content */}
       <div className="px-4 py-2 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-        {content && (
-          <p className="text-sm text-gray-700 mb-3 leading-snug">{content}</p>
-        )}
+        {content && <p className="text-sm text-gray-700 mb-3 leading-snug">{content}</p>}
 
-        {/* Media section */}
         <div className="flex justify-center items-center mb-4">
+          {/* YouTube */}
           {displayType === 'youtube' && (
             <iframe
               className="w-full aspect-video rounded-md"
@@ -91,8 +103,7 @@ export default function Card({
             />
           )}
 
-          
-
+          {/* Website */}
           {displayType === 'websites' && link && (
             <div className="text-center w-full">
               <p className="text-sm font-semibold text-gray-600 mb-1">
@@ -109,11 +120,17 @@ export default function Card({
             </div>
           )}
 
+          {/* Twitter */}
           {displayType === 'twitter' && (
-            <div className="mb-2 text-center">
+            <div className="mb-2 text-center w-full">
+              {!isTweetLoaded && (
+                <div className="text-sm text-gray-400 italic animate-pulse mb-2">
+                  Loading tweet...
+                </div>
+              )}
               <blockquote className="twitter-tweet">
                 <a
-                  href={link.replace('x.com', 'twitter.com')}
+                  href={link.replace("x.com", "twitter.com")}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -123,6 +140,7 @@ export default function Card({
             </div>
           )}
 
+          {/* Image */}
           {displayType === 'image' && link && (
             <img
               src={link}
