@@ -71,7 +71,7 @@ export default function Card({
   }, [displayType, link]);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-full max-w-[320px] h-auto max-h-[460px] overflow-hidden flex flex-col">
+    <div className="bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 w-full max-w-[360px] h-auto max-h-[360px] overflow-hidden flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-start px-4 pt-4">
         <div className="flex items-center gap-2 text-lg font-semibold text-gray-800 max-w-[240px] truncate">
@@ -167,9 +167,11 @@ export default function Card({
       </div>
 
       {/* Footer */}
-      <div className="px-4 pb-2 text-xs text-gray-500 flex justify-between">
+      <div className='flex justify-between'>
+      <div className="px-4 pb-2 text-xs text-gray-500 flex justify-between w-full">
         <span>{formattedDate}</span>
         <span>{formattedTime}</span>
+      </div>
       </div>
     </div>
   );

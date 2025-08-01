@@ -8,7 +8,7 @@ function LandingPage() {
       {/* Header */}
       <header className="py-4 px-6 md:px-12 fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
         <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Cerebra</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Second Brain</h1>
             <a href="signup" className="cta-button bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-5 rounded-lg text-sm md:text-base">
                 Get Started
             </a>
@@ -26,7 +26,7 @@ function LandingPage() {
                       From Information Chaos to <span className="gradient-text">Organized Clarity</span>.
                   </h2>
                   <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 mb-10">
-                      Finally, a home for all your important links, docs, and ideas. Effortlessly save, instantly find, and easily share your knowledge.
+                      Finally, a home for all your important links and ideas. Effortlessly save, instantly find, and easily share your knowledge.
                   </p>
                   <a href="#cta" className="cta-button bg-gray-900 hover:bg-gray-700 text-white font-bold py-4 px-10 rounded-lg text-lg">
                       Build Your Brain for Free
@@ -50,7 +50,7 @@ function LandingPage() {
           <section id="problem" className="py-20 bg-gray-50">
               <div className="container mx-auto px-6 text-center">
                   <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Tired of digital clutter?</h3>
-                  <p className="text-gray-600 max-w-2xl mx-auto mb-12">You find amazing things online, but they end up scattered across bookmarks, notes, and open tabs. We fix that.</p>
+                  <p className="text-gray-600 max-w-2xl mx-auto mb-12">You find amazing things online, but they end up scattered across bookmarks, notes We fix that.</p>
                   <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                       {/* Problem 1 */}
                       <div className="bg-white p-6 rounded-xl border border-gray-200">
@@ -88,7 +88,7 @@ function LandingPage() {
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                           </div>
                           <h4 className="text-2xl font-bold text-gray-900 mb-3">Universal Storage</h4>
-                          <p className="text-gray-600">Save anything: YouTube videos, Twitter threads, articles, PDFs, and your own notes. If it's important, it has a home here.</p>
+                          <p className="text-gray-600">Save anything: YouTube videos, Twitter threads, articles, and your own notes. If it's important, it has a home here.</p>
                       </div>
                       <div className="feature-card p-8 rounded-xl">
                           <div className="bg-indigo-600 text-white rounded-lg w-12 h-12 flex items-center justify-center mb-5">
@@ -116,7 +116,7 @@ function LandingPage() {
                   </div>
                   <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
                       <div className="bg-white p-8 rounded-xl border border-gray-200">
-                          <p className="text-gray-600 text-lg mb-6">"Cerebra is the tool I didn't know I needed. All my project resources are finally in one place, and the filtering is a game-changer. I feel so much more organized."</p>
+                          <p className="text-gray-600 text-lg mb-6">"Second Brain is the tool I didn't know I needed. All my project resources are finally in one place, and the filtering is a game-changer. I feel so much more organized."</p>
                           <div className="flex items-center">
                               <img className="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/E5E7EB/111827?text=JD" alt="Avatar of Jane Doe" />
                               <div>
@@ -158,7 +158,7 @@ function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-gray-200 py-8">
           <div className="container mx-auto px-6 text-center text-gray-500">
-              <p>&copy; 2025 Cerebra. All rights reserved.</p>
+              <p>&copy; 2025 Second Brain. All rights reserved.</p>
               
           </div>
       </footer>
