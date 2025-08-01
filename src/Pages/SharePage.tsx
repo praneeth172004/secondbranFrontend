@@ -82,17 +82,17 @@ interface ContentType {
 function SharePage() {
   const { id } = useParams(); // 👈 get the link from URL param
   const [data, setData] = useState<ContentType[]>([]);
+  const[ user,setuser]=useState<string>('');
 
   const fetchData = async () => {
     try {
       const response = await axiosinstance.get(`/user/share/${id}`, {
-        // headers: {
-        //   Authorization: `Bearer ${localStorage.getItem('token')}`,
-        // },
+        
       });
 
       console.log("Fetched Shared Content:", response.data.content);
       setData(response.data.content || []);
+      setuser(response.data.user.username)
     } catch (err) {
       console.error("Error fetching shared data:", err);
     }
@@ -104,7 +104,7 @@ function SharePage() {
 
   return (
     <div className="flex flex-col min-h-screen w-full overflow-y-scroll bg-gray-50 p-5">
-      <div className="w-full text-3xl font-serif font-semibold mb-2">Ravi</div>
+      <div className="w-full text-3xl font-serif font-semibold mb-2">{user}</div>
       <div className="text-lg text-gray-500 mb-6">shared brain</div>
 
       <div className="grid lg:grid-cols-4 md:grid-cols-2 w-full space-y-[5px]">
